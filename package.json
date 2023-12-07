@@ -1,0 +1,16 @@
+{
+  "name": "advent-of-code",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@biomejs/biome": "1.4.1",
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "format": "bunx @biomejs/biome format . --write",
+    "check": "bun format && bunx @biomejs/biome check . && bun test"
+  }
+}

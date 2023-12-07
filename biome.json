@@ -1,0 +1,90 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.4.1/schema.json",
+	"organizeImports": {
+		"enabled": true
+	},
+	"files": {
+		"ignoreUnknown": true,
+		"ignore": [
+			"**/.DS_Store",
+			"**/.DS_Store/**",
+			"**/.android/**",
+			"**/.eslintrc.js",
+			"**/.eslintrc.json",
+			"**/.expo",
+			"**/.git",
+			"**/.git/**",
+			"**/.gitignore",
+			"**/.next",
+			"**/.next*",
+			"**/.svn",
+			"**/.tamagui",
+			"**/.tamagui*",
+			"**/.turbo",
+			"**/.vscode",
+			"**/.vscodeignore",
+			"**/.watchmanconfig",
+			"**/Thumbs.db",
+			"**/Thumbs.db/**",
+			"**/apps/docs/public/*.js",
+			"**/apps/expo/index.js",
+			"**/apps/marketplace/public/*.js",
+			"**/babel.config.js",
+			"**/build/**",
+			"**/dist",
+			"**/dist/**",
+			"**/eas.json",
+			"**/expo-env.d.ts",
+			"**/generate-tamagui-json.js",
+			"**/ios/**",
+			"**/metro.config.js",
+			"**/next-env.d.ts",
+			"**/node_modules",
+			"**/node_modules/**",
+			"**/out",
+			"**/packages/api/src/generated/**",
+			"**/packages/ui/coverage/**",
+			"**/packages/ui/types/**",
+			"**/service-worker.js",
+			"**/sw*.js",
+			"**/sw.js",
+			"**/tamagui.config.ts",
+			"**/tamagui.css",
+			"**/tsconfig.base.json",
+			"**/tsconfig.json",
+			"**/turbo.json",
+			"**/types",
+			"bun-workspace.yaml"
+		]
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"style": {
+				"useTemplate": "error"
+			},
+			"suspicious": {
+				"noEmptyInterface": "off",
+				"noExplicitAny": "off"
+			},
+			"security": {
+				"noDangerouslySetInnerHtml": "off"
+			}
+		}
+	},
+	"formatter": {
+		"enabled": true,
+		"lineWidth": 100,
+		"indentStyle": "tab",
+		"indentWidth": 2
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single",
+			"jsxQuoteStyle": "single",
+			"trailingComma": "all",
+			"semicolons": "always"
+		}
+	}
+}
