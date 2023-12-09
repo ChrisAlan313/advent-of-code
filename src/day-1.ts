@@ -3,10 +3,6 @@
 
 import { BunFile } from 'bun';
 
-// Solve problem
-
-// Library
-
 export const fileTotaller = async (file: BunFile): Promise<number> => {
 	const text = await file.text();
 	const lines = text.split('\n');
@@ -21,10 +17,15 @@ export const combineDigits = (digits: [string, string]): number => {
 	return +digits.join('');
 };
 
-export const extractFirstAndLastDigits = (str: string): [string, string] => {
+export const extractFirstAndLastDigits = (str: string, readWords = false): [string, string] => {
 	// Regex to capture all digits in string
-	const rgx: RegExp = /[0-9]/g;
-	const digits = [...str.matchAll(rgx)].flat();
+	let digits: string[];
+	if (readWords) {
+		digits = ['1', '1'];
+	} else {
+		const rgx: RegExp = /[0-9]/g;
+		digits = [...str.matchAll(rgx)].flat();
+	}
 	if (digits === undefined || digits.length === 0) {
 		throw new Error(`No digits in str. Value of str is ${str}`);
 	}

@@ -1,11 +1,10 @@
-import { afterAll, beforeAll, describe, expect, it, spyOn } from 'bun:test';
-import { combineDigits, extractFirstAndLastDigits, fileTotaller } from '../src/1-1';
+import { describe, expect, it } from 'bun:test';
+import { combineDigits, extractFirstAndLastDigits, fileTotaller } from './day-1';
 
 describe('integration', () => {
 	it('solves day of advent 1-1', async () => {
-		const file =  Bun.file('./inputs/day-1.txt');
-		console.log(file);
-		const expectedTotal = 1;
+		const file = Bun.file(`${import.meta.dir}/inputs/day-1.txt`);
+		const expectedTotal = 55208;
 		const actualTotal = await fileTotaller(file);
 
 		expect(actualTotal).toBe(expectedTotal);
