@@ -1,6 +1,14 @@
-export const gameLineParser = (
-	line: string,
-): { game: number; sets: { red?: number; blue?: number; green?: number }[] } => {
+type Set = {
+	red?: number;
+	blue?: number;
+	green?: number;
+};
+type Game = {
+	id: number;
+	sets: Set[];
+};
+
+export const gameLineParser = (line: string): Game => {
 	const lineFormat = /Game \d+: (\d+ (red|blue|green)(, |; |))+/;
 	if (!lineFormat.test(line)) {
 		throw new Error(`Incorrect format. Line given is: ${line}`);
@@ -18,7 +26,34 @@ export const gameLineParser = (
 	});
 
 	return {
-		game: +gameNumber,
+		id: +gameNumber,
 		sets,
 	};
+};
+
+export const isGamePossible = (game: Game, bounds: Set): boolean => {
+	for (const set of game.sets) {
+		if (!isSetPossible(set, bounds)) {
+			return false;
+		}
+	}
+	return true;
+};
+
+export const isSetPossible = (set: Set, bounds: Set): boolean => {
+	const redBounds = bounds.red ?? 0;
+	const blueBounds = bounds.blue ?? 0;
+	const greenBounds = bounds.green ?? 0;
+
+	if (set.red && set.red > redBounds) {
+		return false;
+	}
+	if (set.blue && set.blue > blueBounds) {
+		return false;
+	}
+	if (set.green && set.green > greenBounds) {
+		return false;
+	}
+
+	return true;
 };
