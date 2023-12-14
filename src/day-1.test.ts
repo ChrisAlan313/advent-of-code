@@ -40,8 +40,8 @@ describe('fileTotaller', () => {
 
 describe('combineDigits', () => {
 	it('concatonates two digits into a single two dgit number', () => {
-		expect(combineDigits(['1', '1'])).toBe(11);
-		expect(combineDigits(['9', '1'])).toBe(91);
+		expect(combineDigits([1, 1])).toBe(11);
+		expect(combineDigits([9, 1])).toBe(91);
 	});
 });
 
@@ -66,7 +66,7 @@ describe('extractFirstAndLastDigits', () => {
 		});
 	});
 
-	describe('without the readWords option', () => {
+	describe('with the readWords option', () => {
 		const options = { readWords: true };
 		it('gets the first and last digits in the string', () => {
 			expect(extractFirstAndLastDigits('13two', options)).toEqual([1, 2]);
