@@ -1,11 +1,11 @@
-type Set = {
+export type Round = {
 	red?: number;
 	blue?: number;
 	green?: number;
 };
-type Game = {
+export type Game = {
 	id: number;
-	sets: Set[];
+	rounds: Round[];
 };
 
 export const gameLineParser = (line: string): Game => {
@@ -17,8 +17,8 @@ export const gameLineParser = (line: string): Game => {
 	// Split by `:` or `;`
 	const lineParts = line.split(/[:;]/) as Array<string>;
 	const gameNumber = lineParts.shift()?.replace('Game ', '') as string;
-	const sets = lineParts.map((set) => {
-		const pairs = set.split(',').map((str) => {
+	const rounds = lineParts.map((round) => {
+		const pairs = round.split(',').map((str) => {
 			const s = str.trim().split(' ').reverse();
 			return [s[0], +s[1]];
 		});
@@ -27,33 +27,37 @@ export const gameLineParser = (line: string): Game => {
 
 	return {
 		id: +gameNumber,
-		sets,
+		rounds,
 	};
 };
 
-export const isGamePossible = (game: Game, bounds: Set): boolean => {
-	for (const set of game.sets) {
-		if (!isSetPossible(set, bounds)) {
+export const isGamePossible = (game: Game, bounds: Round): boolean => {
+	for (const round of game.rounds) {
+		if (!isRoundPossible(round, bounds)) {
 			return false;
 		}
 	}
 	return true;
 };
 
-export const isSetPossible = (set: Set, bounds: Set): boolean => {
+export const isRoundPossible = (round: Round, bounds: Round): boolean => {
 	const redBounds = bounds.red ?? 0;
 	const blueBounds = bounds.blue ?? 0;
 	const greenBounds = bounds.green ?? 0;
 
-	if (set.red && set.red > redBounds) {
+	if (round.red && round.red > redBounds) {
 		return false;
 	}
-	if (set.blue && set.blue > blueBounds) {
+	if (round.blue && round.blue > blueBounds) {
 		return false;
 	}
-	if (set.green && set.green > greenBounds) {
+	if (round.green && round.green > greenBounds) {
 		return false;
 	}
 
 	return true;
+};
+
+export const allPossibleGames = (games: Game[], bounds: Round): Game[] => {
+	return [];
 };

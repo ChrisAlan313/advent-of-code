@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'bun:test';
-import { gameLineParser, isGamePossible, isSetPossible } from './day-2';
+import {
+	type Game,
+	type Round,
+	allPossibleGames,
+	gameLineParser,
+	isGamePossible,
+	isRoundPossible,
+} from './day-2';
 
 describe('gameLineParser', () => {
 	it('should throw if line is malformed', () => {
@@ -14,20 +21,20 @@ describe('gameLineParser', () => {
 		const actual = gameLineParser(line).id;
 		expect(actual).toBe(expected);
 	});
-	it('should return the right number of sets', () => {
+	it('should return the right number of rounds', () => {
 		const line = 'Game 13: 1 green, 6 red; 7 blue, 13 red, 1 green; 3 blue, 4 red';
 		const expected = 3;
-		const actual = gameLineParser(line).sets.length;
+		const actual = gameLineParser(line).rounds.length;
 		expect(actual).toBe(expected);
 	});
-	it('should return the a collection of set', () => {
+	it('should return the a collection of round', () => {
 		const line = 'Game 32: 1 red, 7 blue; 1 red, 8 blue; 1 red, 2 green, 13 blue';
 		const expected = [
 			{ red: 1, blue: 7 },
 			{ red: 1, blue: 8 },
 			{ red: 1, green: 2, blue: 13 },
 		];
-		const actual = gameLineParser(line).sets;
+		const actual = gameLineParser(line).rounds;
 		expect(actual).toEqual(expected);
 	});
 });
@@ -37,7 +44,7 @@ describe('isGamePossible', () => {
 		it('returns true', () => {
 			const game = {
 				id: 4,
-				sets: [
+				rounds: [
 					{ red: 1, blue: 7 },
 					{ red: 1, blue: 8 },
 					{ red: 1, green: 2, blue: 13 },
@@ -49,10 +56,10 @@ describe('isGamePossible', () => {
 		});
 	});
 	describe('given an impossible game', () => {
-		it('returns false if too many reds in a set', () => {
+		it('returns false if too many reds in a round', () => {
 			const game = {
 				id: 4,
-				sets: [
+				rounds: [
 					{ red: 1, blue: 7 },
 					{ red: 2, blue: 8 },
 					{ red: 1, green: 2, blue: 13 },
@@ -62,19 +69,19 @@ describe('isGamePossible', () => {
 
 			expect(isGamePossible(game, bounds)).toBe(false);
 		});
-		it('returns false if too many greens in a set', () => {
+		it('returns false if too many greens in a round', () => {
 			const game = {
 				id: 4,
-				sets: [{ red: 1, blue: 7 }, { blue: 8 }, { red: 1, green: 3, blue: 13 }],
+				rounds: [{ red: 1, blue: 7 }, { blue: 8 }, { red: 1, green: 3, blue: 13 }],
 			};
 			const bounds = { red: 1, green: 2, blue: 13 };
 
 			expect(isGamePossible(game, bounds)).toBe(false);
 		});
-		it('returns false if too many blues in a set', () => {
+		it('returns false if too many blues in a round', () => {
 			const game = {
 				id: 4,
-				sets: [{ red: 1, blue: 7 }, { blue: 21 }, { red: 1, green: 3, blue: 13 }],
+				rounds: [{ red: 1, blue: 7 }, { blue: 21 }, { red: 1, green: 3, blue: 13 }],
 			};
 			const bounds = { red: 1, green: 2, blue: 13 };
 
@@ -83,39 +90,76 @@ describe('isGamePossible', () => {
 	});
 });
 
-describe('isSetPossible', () => {
-	describe('given a possible set', () => {
+describe('isRoundPossible', () => {
+	describe('given a possible round', () => {
 		it('returns true for the same', () => {
-			const set = { red: 1, green: 2, blue: 13 };
+			const round = { red: 1, green: 2, blue: 13 };
 			const bounds = { red: 1, green: 2, blue: 13 };
 
-			expect(isSetPossible(set, bounds)).toBe(true);
+			expect(isRoundPossible(round, bounds)).toBe(true);
 		});
 		it('returns true for the same', () => {
-			const set = { red: 1, green: 1, blue: 12 };
+			const round = { red: 1, green: 1, blue: 12 };
 			const bounds = { red: 1, green: 2, blue: 13 };
 
-			expect(isSetPossible(set, bounds)).toBe(true);
+			expect(isRoundPossible(round, bounds)).toBe(true);
 		});
 	});
-	describe('given an impossible game', () => {
-		it('returns false if too many reds in a set', () => {
-			const set = { red: 2, blue: 7 };
+	describe('given an impossible round', () => {
+		it('returns false if too many reds in a round', () => {
+			const round = { red: 2, blue: 7 };
 			const bounds = { red: 1, green: 2, blue: 13 };
 
-			expect(isSetPossible(set, bounds)).toBe(false);
+			expect(isRoundPossible(round, bounds)).toBe(false);
 		});
-		it('returns false if too many blues in a set', () => {
-			const set = { blue: 99 };
+		it('returns false if too many blues in a round', () => {
+			const round = { blue: 99 };
 			const bounds = { red: 1, green: 2, blue: 13 };
 
-			expect(isSetPossible(set, bounds)).toBe(false);
+			expect(isRoundPossible(round, bounds)).toBe(false);
 		});
-		it('returns false if too many greens in a set', () => {
-			const set = { red: 1, green: 3, blue: 7 };
+		it('returns false if too many greens in a round', () => {
+			const round = { red: 1, green: 3, blue: 7 };
 			const bounds = { red: 1, green: 2, blue: 13 };
 
-			expect(isSetPossible(set, bounds)).toBe(false);
+			expect(isRoundPossible(round, bounds)).toBe(false);
 		});
+	});
+});
+
+describe.skip('allPossibleGames', () => {
+	it('returns an empty array if no possible games', () => {
+		const expected: Game[] = [];
+		const actual = allPossibleGames(
+			[
+				{
+					id: 4,
+					rounds: [{ red: 1, blue: 7 }, { blue: 21 }, { red: 1, green: 3, blue: 13 }],
+				},
+				{
+					id: 5,
+					rounds: [{ red: 7 }, { blue: 4 }, { green: 3, blue: 13 }],
+				},
+			],
+			{ red: 99 },
+		);
+
+		expect(expected).toEqual(actual);
+	});
+	it('returns array of games within bounds', () => {
+		const passingGame: Game = {
+			id: 4,
+			rounds: [{ red: 1, blue: 7 }, { blue: 2 }, { red: 1, green: 3, blue: 3 }],
+		};
+		const notPassingGame: Game = {
+			id: 5,
+			rounds: [{ red: 7 }, { blue: 4 }, { green: 3, blue: 13 }],
+		};
+		const games = [passingGame, notPassingGame];
+		const bounds: Round = {};
+		const expected = [passingGame];
+		const actual = allPossibleGames(games, { red: 99 });
+
+		expect(expected).toEqual(actual);
 	});
 });
