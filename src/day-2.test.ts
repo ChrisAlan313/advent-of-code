@@ -127,7 +127,7 @@ describe('isRoundPossible', () => {
 	});
 });
 
-describe.skip('allPossibleGames', () => {
+describe('allPossibleGames', () => {
 	it('returns an empty array if no possible games', () => {
 		const expected: Game[] = [];
 		const actual = allPossibleGames(
@@ -156,9 +156,9 @@ describe.skip('allPossibleGames', () => {
 			rounds: [{ red: 7 }, { blue: 4 }, { green: 3, blue: 13 }],
 		};
 		const games = [passingGame, notPassingGame];
-		const bounds: Round = {};
+		const bounds: Round = { red: 1, blue: 7, green: 3 };
 		const expected = [passingGame];
-		const actual = allPossibleGames(games, { red: 99 });
+		const actual = allPossibleGames(games, bounds);
 
 		expect(expected).toEqual(actual);
 	});

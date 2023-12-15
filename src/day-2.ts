@@ -1,3 +1,5 @@
+import { BunFile } from 'bun';
+
 export type Round = {
 	red?: number;
 	blue?: number;
@@ -59,5 +61,29 @@ export const isRoundPossible = (round: Round, bounds: Round): boolean => {
 };
 
 export const allPossibleGames = (games: Game[], bounds: Round): Game[] => {
-	return [];
+	return games.filter((game) => isGamePossible(game, bounds));
 };
+
+export const fileTotaller = async (file: BunFile, bounds: Round): Promise<number> => {
+	const text = await file.text();
+	const lines = text.split('\n');
+	const games = lines.map<Game>((line) => gameLineParser(line));
+	const possibleGames = allPossibleGames(games, bounds);
+
+	return possibleGames
+		.map((game) => game.id)
+		.reduce((acc, cur) => {
+			return acc + cur;
+		}, 0);
+};
+
+// console.log(
+// 	'Determine which games would have been possible if the bag had been' +
+// 		'loaded with only 12 red cubes, 13 green cubes, and 14 blue cubes.' +
+// 		'What is the sum of the IDs of those games?',
+// 	await fileTotaller(Bun.file(`${import.meta.dir}/inputs/day-2.txt`), {
+// 		red: 12,
+// 		green: 13,
+// 		blue: 14,
+// 	}),
+// );
